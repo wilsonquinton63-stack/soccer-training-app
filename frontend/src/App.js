@@ -1,28 +1,30 @@
 import { useEffect, useState } from "react";
+import ReactMarkdown from "react-markdown";
 import "./App.css";
-
-const API_URL = "http://localhost:5001/api/tasks";
+const API_URL = "/api";
 
 function App() {
   const [tasks, setTasks] = useState([]);
   const [task, setTask] = useState("");
 
-  // Get tasks from the backend
+  const [goal, setGoal] = useState("");
+  const [plan, setPlan] = useState("");
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
-    fetch(API_URL)
+    fetch(`${API_URL}/tasks`)
       .then((response) => response.json())
       .then((data) => setTasks(data))
       .catch((error) => console.error("Error getting tasks:", error));
   }, []);
 
-  // Add a task
   const addTask = async (e) => {
     e.preventDefault();
 
-    if (task.trim() === "") return;
+    if (!task.trim()) return;
 
     try {
-      const response = await fetch(API_URL, {
+      const response = await fetch(`${API_URL}/tasks`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -39,16 +41,47 @@ function App() {
     }
   };
 
-  // Delete a task
   const deleteTask = async (id) => {
     try {
-      await fetch(`${API_URL}/${id}`, {
+      await fetch(`${API_URL}/tasks/${id}`, {
         method: "DELETE",
       });
 
-      setTasks(tasks.filter((task) => task.id !== id));
+      setTasks(tasks.filter((item) => item.id !== id));
     } catch (error) {
       console.error("Error deleting task:", error);
+    }
+  };
+
+  const generatePlan = async (e) => {
+    e.preventDefault();
+
+    if (!goal.trim()) return;
+
+    setLoading(true);
+    setPlan("");
+
+    try {
+      const response = await fetch(`${API_URL}/ai-plan`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ goal }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Could not generate plan");
+      }
+
+      setPlan(data.plan);
+    } catch (error) {
+      console.error("AI error:", error);
+      setPlan("Something went wrong generating the training plan.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -56,34 +89,61 @@ function App() {
     <div className="app">
       <div className="container">
         <h1>⚽ Soccer Training Planner</h1>
+
         <p className="subtitle">
-          Create and manage your soccer training tasks
+          Create tasks and generate personalized training plans.
         </p>
 
-        <form onSubmit={addTask} className="task-form">
-          <input
-            type="text"
-            placeholder="Enter a training task..."
-            value={task}
-            onChange={(e) => setTask(e.target.value)}
-          />
+        <div className="ai-section">
+          <h2>AI Training Plan</h2>
 
-          <button type="submit">Add Task</button>
-        </form>
+          <form onSubmit={generatePlan}>
+            <input
+              type="text"
+              placeholder="What do you want to improve?"
+              value={goal}
+              onChange={(e) => setGoal(e.target.value)}
+            />
+
+            <button type="submit" disabled={loading}>
+              {loading ? "Generating..." : "Generate Plan"}
+            </button>
+          </form>
+
+          {plan && (
+  <div className="plan">
+    <h3>Your Training Plan</h3>
+   <div className="plan-text">
+  <ReactMarkdown>{plan}</ReactMarkdown>
+</div>
+  </div>
+)}
+        </div>
 
         <div className="task-section">
           <h2>Training Tasks</h2>
 
+          <form onSubmit={addTask} className="task-form">
+            <input
+              type="text"
+              placeholder="Enter a training task..."
+              value={task}
+              onChange={(e) => setTask(e.target.value)}
+            />
+
+            <button type="submit">Add Task</button>
+          </form>
+
           {tasks.length === 0 ? (
-            <p className="empty">No training tasks yet. Add one above!</p>
+            <p className="empty">No training tasks yet.</p>
           ) : (
-            tasks.map((task) => (
-              <div className="task-card" key={task.id}>
-                <span>{task.task}</span>
+            tasks.map((item) => (
+              <div className="task-card" key={item.id}>
+                <span>{item.task}</span>
 
                 <button
                   className="delete-button"
-                  onClick={() => deleteTask(task.id)}
+                  onClick={() => deleteTask(item.id)}
                 >
                   Delete
                 </button>

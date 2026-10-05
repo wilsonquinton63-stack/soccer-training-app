@@ -77,3 +77,37 @@ h1 {
   border-radius: 6px;
   cursor: pointer;
 }
+.plan-text {
+  white-space: pre-wrap;
+  line-height: 1.6;
+  text-align: left;
+}
+.plan-text {
+  line-height: 1.6;
+  text-align: left;
+}
+
+.plan-text h1,
+.plan-text h2,
+.plan-text h3 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.plan-text p {
+  margin-bottom: 12px;
+}
+
+.plan-text ul,
+.plan-text ol {
+  margin-bottom: 15px;
+  padding-left: 25px;
+}
+
+.plan-text li {
+  margin-bottom: 6px;
+}
+
+.plan-text strong {
+  font-weight: 700;
+}

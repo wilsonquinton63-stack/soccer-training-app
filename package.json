@@ -1,0 +1,16 @@
+{const path = require("path");
+  "name": "soccer-training-app",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "start": "node backend/server.js",
+    "heroku-postbuild": "npm run build --workspace frontend"
+  },
+  "engines": {
+    "node": "22.x"
+  }
+}

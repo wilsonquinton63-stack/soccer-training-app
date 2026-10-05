@@ -4,12 +4,13 @@ const express = require("express");
 const cors = require("cors");
 const { MongoClient, ObjectId } = require("mongodb");
 const { GoogleGenAI } = require("@google/genai");
-
+const path = require("path");
 const app = express();
-const PORT = 5001;
+const PORT = process.env.PORT || 5001;
 
 app.use(cors());
 app.use(express.json());
+app.use(express.static(path.join(__dirname, "../frontend/build")));
 
 const client = new MongoClient(process.env.MONGODB_URI);
 
@@ -118,6 +119,15 @@ Keep the plan realistic and easy to follow.`,
       error: error.message,
     });
   }
+});
+app.use((req, res, next) => {
+  if (req.method === "GET" && !req.path.startsWith("/api/")) {
+    return res.sendFile(
+      path.join(__dirname, "../frontend/build/index.html")
+    );
+  }
+
+  next();
 });
 
   app.listen(PORT, () => {
