@@ -1,0 +1,39 @@
+◇ injected env (2) from .env
+Connected to MongoDB!
+Backend server running on port 5001
+AI plan error: AuthenticationError: 401 Incorrect API key provided: YOUR_API*****HERE. You can find your API key at https://platform.openai.com/account/api-keys.
+    at APIError.generate (/Users/quintonwilson/soccer-training-app/backend/node_modules/openai/core/error.js:48:20)
+    at OpenAI.makeStatusError (/Users/quintonwilson/soccer-training-app/backend/node_modules/openai/client.js:446:32)
+    at OpenAI.makeRequest (/Users/quintonwilson/soccer-training-app/backend/node_modules/openai/client.js:994:30)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async /Users/quintonwilson/soccer-training-app/backend/server.js:93:22 {
+  status: 401,
+  headers: Headers {
+    date: 'Mon, 05 Oct 2026 02:30:06 GMT',
+    'content-type': 'application/json',
+    'content-length': '246',
+    connection: 'keep-alive',
+    'set-cookie': '__cf_bm=EXd97ZVHYXpn7VgMRY4T9xEABpDDJSs1nb0.F_YWFuk-1791167406.112173-1.0.1.1-Afl0p8vv_x2XqprnjKa9tHcM6T42D5bleT2uKOy.XYdCTJqdFeI1UZcweDY.lI50U_Weyuh.K.H9OdkSdC6dSU5xAEUi4IU6get6U5y_C_n14Pzy64m0s1.2i0Zlei9a; HttpOnly; SameSite=None; Secure; Path=/; Domain=api.openai.com; Expires=Mon, 05 Oct 2026 03:00:06 GMT, _cfuvid=tkNcUVbSBCxmBlqx9JTQ6pVPqViijoyUr.KA5W3l5Mw-1791167406.112173-1.0.1.1-6S0MQ_cVYtx6bt.TU3e9gVb06FSBAjuDYOE6auu_nPk; HttpOnly; SameSite=None; Secure; Path=/; Domain=api.openai.com',
+    'cf-ray': 'a45900a03f9f1910-ORD',
+    'cf-cache-status': 'DYNAMIC',
+    server: 'cloudflare',
+    'strict-transport-security': 'max-age=31536000; includeSubDomains; preload',
+    'www-authenticate': 'Bearer realm="OpenAI API"',
+    'x-content-type-options': 'nosniff',
+    'access-control-expose-headers': 'X-Request-ID, CF-Ray, CF-Ray',
+    'openai-processing-ms': '22',
+    'openai-version': '2020-10-01',
+    'x-request-id': 'req_40b3de3f89b6411e9c7584c999962f64',
+    'alt-svc': 'h3=":443"; ma=86400'
+  },
+  requestID: 'req_40b3de3f89b6411e9c7584c999962f64',
+  error: {
+    message: 'Incorrect API key provided: YOUR_API*****HERE. You can find your API key at https://platform.openai.com/account/api-keys.',
+    type: 'invalid_request_error',
+    param: null,
+    code: 'invalid_api_key'
+  },
+  code: 'invalid_api_key',
+  param: null,
+  type: 'invalid_request_error'
+}
